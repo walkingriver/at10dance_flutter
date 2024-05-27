@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'home_screen.dart';
-import 'roster_screen.dart';
-import 'settings_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/roster_screen.dart';
+import 'screens/settings_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
