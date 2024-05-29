@@ -6,23 +6,37 @@ import '../models/student.dart';
 import '../models/student.provider.dart';
 import 'student_row.dart';
 
+class RosterActionSheetCallbacks {
+  final Function(Student) onPresent;
+  final Function(Student) onAbsent;
+  final Function(Student) onDelete;
+  final Function() onCancel;
+
+  const RosterActionSheetCallbacks({
+    required this.onPresent,
+    required this.onAbsent,
+    required this.onDelete,
+    required this.onCancel,
+  });
+}
+
 class RosterScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final students = ref.watch(allStudentsProvider);
+    final students = ref.watch(studentListProvider);
 
     return AppShell(
-      child: students.hasValue
+      child: students.length > 0
           ? ListView.builder(
-              itemCount: students.value?.length,
+              itemCount: students.length,
               itemBuilder: (context, index) {
-                final student = students.value![index];
+                final student = students[index];
                 return StudentRow(
                   student: student,
                   onDelete: () {
                     // Delete student
-                    print(
-                        'Student deleted: ${student.lastName}, ${student.firstName}');
+                    // students.remove(student);
+                    ref.read(studentListProvider.notifier).remove(student);
                   },
                   onDetails: () {
                     // Navigate to student detail page
@@ -31,11 +45,10 @@ class RosterScreen extends ConsumerWidget {
                   },
                   onMore: () {
                     // Show action sheet
-                    _presentActionSheet(context, student);
+                    _presentActionSheet(context, student, ref);
                   },
                   onTap: () {
                     // Show action sheet
-                    _presentActionSheet(context, student);
                   },
                 );
               },
@@ -45,21 +58,40 @@ class RosterScreen extends ConsumerWidget {
     );
   }
 
-  void _presentActionSheet(BuildContext context, Student student) {
+  void _presentActionSheet(
+    BuildContext context,
+    Student student,
+    WidgetRef ref,
+  ) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Start with the student name as a "title"
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onPrimary,
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: ListTile(
+                title: Text(
+                  'Student: ${student.lastName}, ${student.firstName}',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            Divider(),
             // Mark Present Button
             ListTile(
               leading: Icon(Icons.visibility),
               title: Text('Mark Present'),
               onTap: () {
                 // Mark Present
-                print(
-                    'Mark Present: ${student.lastName}, ${student.firstName}');
                 // Dismiss the bottom sheet
                 Navigator.pop(context);
               },
@@ -70,7 +102,6 @@ class RosterScreen extends ConsumerWidget {
               title: Text('Mark Absent'),
               onTap: () {
                 // Mark Absent
-                print('Mark Absent: ${student.lastName}, ${student.firstName}');
                 // Dismiss the bottom sheet
                 Navigator.pop(context);
               },
@@ -80,8 +111,7 @@ class RosterScreen extends ConsumerWidget {
               title: Text('Delete'),
               onTap: () {
                 // Delete student
-                print(
-                    'Student deleted: ${student.lastName}, ${student.firstName}');
+                ref.read(studentListProvider.notifier).remove(student);
                 // Dismiss the bottom sheet
                 Navigator.pop(context);
               },
