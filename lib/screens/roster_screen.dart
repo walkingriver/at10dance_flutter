@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../main.dart';
 import '../models/student.dart';
 import '../models/student.provider.dart';
+import 'student_details_screen.dart';
 import 'student_row.dart';
 
 class RosterActionSheetCallbacks {
@@ -39,9 +40,12 @@ class RosterScreen extends ConsumerWidget {
                     ref.read(studentListProvider.notifier).remove(student);
                   },
                   onDetails: () {
-                    // Navigate to student detail page
-                    print(
-                        'Student details: ${student.lastName}, ${student.firstName}');
+                    // Use Go Router to Navigate to student detail page
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                StudentDetailScreen(initialStudent: student)));
                   },
                   onMore: () {
                     // Show action sheet

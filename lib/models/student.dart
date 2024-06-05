@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'student.freezed.dart';
@@ -20,3 +21,14 @@ class Student with _$Student {
   factory Student.fromJson(Map<String, dynamic> json) =>
       _$StudentFromJson(json);
 }
+
+// class StudentController extends StateNotifier<Student> {
+//   StudentController() : super(Student(id: '', firstName: '', lastName: ''));
+
+//   void update(Student student) {
+//     state = student;
+//   }
+// }
+
+// final studentProvider = StateNotifierProvider<StudentController, Student>(
+//     (ref) => StudentController());
