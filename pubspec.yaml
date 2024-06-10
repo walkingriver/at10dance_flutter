@@ -47,6 +47,8 @@ dev_dependencies:
   riverpod_lint: ^3.0.0-dev.4
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.0
   freezed: ^2.5.2

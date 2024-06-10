@@ -48,16 +48,28 @@ class MyApp extends StatelessWidget {
   }
 }
 
+const defaultKey = Key('appShell');
+
+class AppPage {
+  String title;
+  String url;
+  IconData icon;
+
+  AppPage({required this.title, required this.url, required this.icon});
+}
+
 class AppShell extends StatefulWidget {
   final Widget child;
   final bool showDrawer;
-  final List<Map<String, String>> appPages = [
-    {'title': 'Home', 'url': '/home', 'icon': 'home'},
-    {'title': 'Roster', 'url': '/roster', 'icon': 'list'},
-    {'title': 'Settings', 'url': '/settings', 'icon': 'settings'},
+  final Key key;
+  final List<AppPage> appPages = [
+    AppPage(title: 'Home', url: '/home', icon: Icons.home),
+    AppPage(title: 'Roster', url: '/roster', icon: Icons.list),
+    AppPage(title: 'Settings', url: '/settings', icon: Icons.settings),
   ];
 
-  AppShell({required this.child, this.showDrawer = false});
+  AppShell(
+      {required this.child, this.showDrawer = false, this.key = defaultKey});
 
   @override
   _AppShellState createState() => _AppShellState();
@@ -91,10 +103,10 @@ class _AppShellState extends State<AppShell> {
                   ),
                   for (var page in widget.appPages)
                     ListTile(
-                      title: Text(page['title']!),
-                      leading: Icon(Icons.home), // Use appropriate icons
+                      title: Text(page.title),
+                      leading: Icon(page.icon),
                       onTap: () {
-                        context.go(page['url']!);
+                        context.go(page.url);
                       },
                     ),
                   Divider(),

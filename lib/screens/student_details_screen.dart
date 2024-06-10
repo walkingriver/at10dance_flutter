@@ -10,10 +10,13 @@ class StudentDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final _formKey = GlobalKey<FormState>();
+
     if (initialStudent == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (Navigator.canPop(context)) {
         Navigator.pop(context);
-      });
+      }
+
       return Container(); // Return an empty container
     }
 
@@ -72,38 +75,42 @@ class StudentDetailScreen extends ConsumerWidget {
         ],
       ),
       body: Center(
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  controller: firstNameController,
-                  decoration: InputDecoration(labelText: 'First Name'),
-                ),
-                TextFormField(
-                  controller: lastNameController,
-                  decoration: InputDecoration(labelText: 'Last Name'),
-                ),
-                TextFormField(
-                  controller: parentNameController,
-                  decoration: InputDecoration(labelText: 'Parent Name'),
-                ),
-                TextFormField(
-                  controller: parentEmailController,
-                  decoration: InputDecoration(labelText: 'Parent Email'),
-                ),
-                TextFormField(
-                  controller: parentPhoneController,
-                  decoration: InputDecoration(labelText: 'Parent Phone'),
-                ),
-                TextFormField(
-                  controller: photoUrlController,
-                  decoration: InputDecoration(labelText: 'Photo URL'),
-                  enabled: false,
-                ),
-              ],
+        // Set up the form
+        child: Form(
+          key: _formKey,
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    controller: firstNameController,
+                    decoration: InputDecoration(labelText: 'First Name'),
+                  ),
+                  TextFormField(
+                    controller: lastNameController,
+                    decoration: InputDecoration(labelText: 'Last Name'),
+                  ),
+                  TextFormField(
+                    controller: parentNameController,
+                    decoration: InputDecoration(labelText: 'Parent Name'),
+                  ),
+                  TextFormField(
+                    controller: parentEmailController,
+                    decoration: InputDecoration(labelText: 'Parent Email'),
+                  ),
+                  TextFormField(
+                    controller: parentPhoneController,
+                    decoration: InputDecoration(labelText: 'Parent Phone'),
+                  ),
+                  TextFormField(
+                    controller: photoUrlController,
+                    decoration: InputDecoration(labelText: 'Photo URL'),
+                    enabled: false,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

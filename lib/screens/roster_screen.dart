@@ -7,18 +7,11 @@ import '../models/student.provider.dart';
 import 'student_details_screen.dart';
 import 'student_row.dart';
 
-class RosterActionSheetCallbacks {
-  final Function(Student) onPresent;
-  final Function(Student) onAbsent;
-  final Function(Student) onDelete;
-  final Function() onCancel;
-
-  const RosterActionSheetCallbacks({
-    required this.onPresent,
-    required this.onAbsent,
-    required this.onDelete,
-    required this.onCancel,
-  });
+class RosterScreenKeys {
+  static final rosterScreen = Key('rosterScreen');
+  static final studentList = Key('studentList');
+  static final studentRow = Key('studentRow');
+  static final actionSheet = Key('actionSheet');
 }
 
 class RosterScreen extends ConsumerWidget {
@@ -27,8 +20,10 @@ class RosterScreen extends ConsumerWidget {
     final students = ref.watch(studentListProvider);
 
     return AppShell(
+      key: RosterScreenKeys.rosterScreen,
       child: students.length > 0
           ? ListView.builder(
+              key: RosterScreenKeys.studentList,
               itemCount: students.length,
               itemBuilder: (context, index) {
                 final student = students[index];
@@ -71,6 +66,7 @@ class RosterScreen extends ConsumerWidget {
       context: context,
       builder: (context) {
         return Column(
+          key: RosterScreenKeys.actionSheet,
           mainAxisSize: MainAxisSize.min,
           children: [
             // Start with the student name as a "title"
